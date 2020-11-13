@@ -1,3 +1,9 @@
+resource "random_string" "project_suffix" {
+  length                  = 5
+  upper                   = false
+  special                 = false
+}
+
 variable "aws_region" {
   type                     = string
 }
@@ -18,24 +24,29 @@ variable "pubnet1_instance_ip" {
   type                     = string
 }
 
-variable "jenkinsnet_cidr" {
+variable "docker_network" {
   type                     = string
-  description              = "Jenkins subnet in CIDR notation for the Docker configuration"
+  description              = "Jenkins network IP for the Docker configuration"
 }
 
-variable "jenkinsnet_master" {
+variable "docker_gw" {
   type                     = string
-  description              = "IP within jenkinsnet_cidr for the Jenkins Master container instance"
+  description              = "IP within docker_network/24 for the network gateway"
 }
 
-variable "jenkinsmaster_webport" {
+variable "docker_jenkinsmaster" {
   type                     = string
-  description              = "Port exposed to local machine from Jenkins Master container, forwarded to by HTTPS proxy via port 443 w/ TLS"
+  description              = "IP within docker_network/24 for the Jenkins Master container instance"
+}
+
+variable "docker_webproxy" {
+  type                     = string
+  description              = "IP within docker_network/24 for the httpd TLS proxy"
 }
 
 variable "mgmt_cidr" {
   type                     = string
-  description              = "Subnet CIDR allowed to access WebUI and SSH, e.g. 172.16.10.0/30"
+  description              = "Subnet CIDR allowed to access WebUI and SSH, e.g. my_public_ip/32"
 }
 
 variable "instance_type" {
@@ -58,14 +69,9 @@ variable "kms_manager" {
   description              = "An IAM user for management of KMS key"
 }
 
-variable "bucket_name" {
+variable "project_prefix" {
   type                     = string
   description              = "A unique bucket name to store playbooks and output of SSM"
-}
-
-variable "ec2_name_prefix" {
-  type                     = string
-  description              = "A friendly name prefix for the AMI and EC2 instances, e.g. 'jenkins' or 'dev-jenkins'"
 }
 
 variable "vendor_ami_account_number" {

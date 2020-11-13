@@ -17,13 +17,13 @@ resource "aws_instance" "jenkins-master-1" {
   private_ip              = var.pubnet1_instance_ip
   vpc_security_group_ids  = [aws_security_group.jenkins-pubsg1.id]
   tags                    = {
-    Name                    = "${var.ec2_name_prefix}-master-1"
+    Name                    = "${var.project_prefix}-master-1"
     Jenkins                 = "master"
   }
   user_data               = <<EOF
 #!/bin/bash
 # set hostname
-hostnamectl set-hostname ${var.ec2_name_prefix}-master1
+hostnamectl set-hostname ${var.project_prefix}-master1
 EOF
   root_block_device {
     volume_size             = var.instance_vol_size
