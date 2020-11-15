@@ -18,8 +18,8 @@ pipeline {
         sh('mkdir terraform')
         sh('wget https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip -O terraform/terraform.zip')
         sh('unzip -d terraform/ terraform/terraform.zip')
-        sh('terraform/terraform init')
-        sh('terraform/terraform plan -out jenkins')
+        sh('terraform/terraform init -no-color')
+        sh('terraform/terraform plan -no-color -out jenkins -var-file="jenkins.tfvars"')
       }
     }
     stage('Approve') {
@@ -31,7 +31,7 @@ pipeline {
     }
     stage('Apply') {
       steps {
-        sh('terraform/terraform apply -input=false jenkins')
+        sh('terraform/terraform apply -no-color -input=false jenkins -var-file="jenkins.tfvars"')
       }
     }
   }
