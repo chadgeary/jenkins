@@ -23,9 +23,9 @@ pipeline {
         sh('unzip -f -d terraform/ terraform/terraform.zip')
         sh('sed -i \'/  profile                  = var.aws_profile/a  shared_credentials_file  = ".credentials"\' jenkins-generic.tf')
         sh('cp jenkins.tfvars pvars.tfvars')
-        sh('sed -i -e "s#^mgmt_cidr = #mgmt_cidr = \\"$MGMT_CIDR\\"#" pvars.tfvars')
-        sh('sed -i -e "s#^pub_key = #pub_key = \\"$PUB_KEY\\"#" pvars.tfvars')
-        sh('sed -i -e "s#^kms_manager = #kms_manager = \\"$KMS_MANAGER\\"#" pvars.tfvars')
+        sh('sed -i -e "s#^mgmt_cidr.*#mgmt_cidr = \\"$MGMT_CIDR\\"#" pvars.tfvars')
+        sh('sed -i -e "s#^pub_key.*#pub_key = \\"$PUB_KEY\\"#" pvars.tfvars')
+        sh('sed -i -e "s#^kms_manager.*#kms_manager = \\"$KMS_MANAGER\\"#" pvars.tfvars')
         sh('terraform/terraform init -no-color')
         sh('terraform/terraform plan -no-color -out jenkins -var-file="pvars.tfvars"')
       }
