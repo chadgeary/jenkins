@@ -18,16 +18,16 @@ pipeline {
     }
     stage('Plan') {
       steps {
-        sh('mkdir -p terraform')
-        sh('wget --quiet https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip -O ~/terraform.zip')
-        sh('unzip -f -d terraform/ terraform/terraform.zip')
+        sh('mkdir -p ~/.local/bin')
+        sh('if ! [ -f ~/terraform.zip ]; then wget --quiet https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip -O ~/terraform.zip; fi')
+        sh('unzip -f -d ~/.local/bin/ ~/terraform.zip')
         sh('sed -i \'/  profile                  = var.aws_profile/a  shared_credentials_file  = ".credentials"\' jenkins-generic.tf')
         sh('cp jenkins.tfvars pvars.tfvars')
         sh('sed -i -e "s#^mgmt_cidr.*#mgmt_cidr = \\"$MGMT_CIDR\\"#" pvars.tfvars')
         sh('sed -i -e "s#^pub_key.*#pub_key = \\"$PUB_KEY\\"#" pvars.tfvars')
         sh('sed -i -e "s#^kms_manager.*#kms_manager = \\"$KMS_MANAGER\\"#" pvars.tfvars')
-        sh('terraform/terraform init -no-color')
-        sh('terraform/terraform plan -no-color -out jenkinsplan -var-file="pvars.tfvars"')
+        sh('~/.local/bin/terraform init -no-color')
+        sh('~/.local/bin/terraform plan -no-color -out jenkinsplan -var-file="pvars.tfvars"')
       }
     }
     stage('Approve') {
@@ -39,7 +39,7 @@ pipeline {
     }
     stage('Apply') {
       steps {
-        sh('terraform/terraform apply -no-color -input=false jenkinsplan')
+        sh('~/.local/bin/terraform apply -no-color -input=false jenkinsplan')
       }
     }
   }
