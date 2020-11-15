@@ -7,8 +7,7 @@ pipeline {
     stage('Checkout') {
       steps {
         checkout scm
-        sh 'mkdir -p creds'
-        sh 'echo $SVC_ACCOUNT_KEY | base64 -d > ./.credentials'
+        sh "echo $SVC_ACCOUNT_KEY | base64 -d > ./.credentials"
       }
     }
     stage('Plan') {
