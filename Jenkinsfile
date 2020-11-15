@@ -20,7 +20,7 @@ pipeline {
       steps {
         sh('mkdir -p ~/.local/bin')
         sh('if ! [ -f ~/terraform.zip ]; then wget --quiet https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip -O ~/terraform.zip; fi')
-        sh('unzip -f -d ~/.local/bin/ ~/terraform.zip')
+        sh('cd ~/.local/bin/ && unzip -f ~/terraform.zip')
         sh('sed -i \'/  profile                  = var.aws_profile/a  shared_credentials_file  = ".credentials"\' jenkins-generic.tf')
         sh('cp jenkins.tfvars pvars.tfvars')
         sh('sed -i -e "s#^mgmt_cidr.*#mgmt_cidr = \\"$MGMT_CIDR\\"#" pvars.tfvars')
