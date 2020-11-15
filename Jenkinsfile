@@ -7,14 +7,14 @@ pipeline {
     stage('Checkout') {
       steps {
         checkout scm
-        sh "echo $SVC_ACCOUNT_KEY | base64 -d > ./.credentials"
+        sh('echo $SVC_ACCOUNT_KEY | base64 -d > ./.credentials')
       }
     }
     stage('Plan') {
       steps {
         container('terraform') {
-          sh 'terraform init'
-          sh 'terraform plan -out jenkins'
+          sh('terraform init')
+          sh('terraform plan -out jenkins')
         }
       }
     }
@@ -28,7 +28,7 @@ pipeline {
     stage('Apply') {
       steps {
         container('terraform') {
-          sh 'terraform apply -input=false jenkins'
+          sh('terraform apply -input=false jenkins')
         }
       }
     }
