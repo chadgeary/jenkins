@@ -15,7 +15,7 @@ pipeline {
     }
     stage('Plan') {
       steps {
-        sh('mkdir terraform')
+        sh('mkdir -p terraform')
         sh('wget https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip -O terraform/terraform.zip')
         sh('unzip -d terraform/ terraform/terraform.zip')
         sh('terraform/terraform init -no-color')
