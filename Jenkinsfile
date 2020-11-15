@@ -18,7 +18,7 @@ pipeline {
         sh('mkdir -p terraform')
         sh('wget https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip -O terraform/terraform.zip')
         sh('unzip -f -d terraform/ terraform/terraform.zip')
-        sh(sed -i '/  profile                  = var.aws_profile/a  shared_credentials_file  = ".credentials"' jenkins-generic.tf)
+        sh('sed -i \'/  profile                  = var.aws_profile/a  shared_credentials_file  = ".credentials"\' jenkins-generic.tf')
         sh('terraform/terraform init -no-color')
         sh('terraform/terraform plan -no-color -out jenkins -var-file="jenkins.tfvars"')
       }
