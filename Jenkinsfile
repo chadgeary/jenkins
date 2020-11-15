@@ -27,7 +27,7 @@ pipeline {
         sh('sed -i -e "s#^pub_key.*#pub_key = \\"$PUB_KEY\\"#" pvars.tfvars')
         sh('sed -i -e "s#^kms_manager.*#kms_manager = \\"$KMS_MANAGER\\"#" pvars.tfvars')
         sh('terraform/terraform init -no-color')
-        sh('terraform/terraform plan -no-color -out jenkins -var-file="pvars.tfvars"')
+        sh('terraform/terraform plan -no-color -out jenkinsplan -var-file="pvars.tfvars"')
       }
     }
     stage('Approve') {
@@ -39,7 +39,7 @@ pipeline {
     }
     stage('Apply') {
       steps {
-        sh('terraform/terraform apply -no-color -input=false jenkins -var-file="pvars.tfvars"')
+        sh('terraform/terraform apply -no-color -input=false jenkinsplan -var-file="pvars.tfvars"')
       }
     }
   }
