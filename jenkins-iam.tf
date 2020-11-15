@@ -56,7 +56,7 @@ EOF
 
 # Instance Role
 resource "aws_iam_role" "jenkins-instance-iam-role" {
-  name                    = "jenkins-instance-profile"
+  name                    = "jenkins-instance-profile-${random_string.project_suffix.result}"
   path                    = "/"
   assume_role_policy      = <<EOF
 {
