@@ -39,7 +39,7 @@ pipeline {
     }
     stage('Apply') {
       steps {
-        sh('terraform/terraform apply -no-color -input=false jenkinsplan -var-file="pvars.tfvars"')
+        sh('terraform/terraform apply -no-color -input=false jenkinsplan')
       }
     }
   }
