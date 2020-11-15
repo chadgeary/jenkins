@@ -3,6 +3,9 @@ pipeline {
   environment {
     SVC_ACCOUNT_KEY = credentials('aws-key')
     SVC_ACCOUNT_SECRET = credentials('aws-secret')
+    MGMT_CIDR = credentials('mgmt-cidr')
+    PUB_KEY = credentials('pub-key')
+    KMS_MANAGER = credentials('kms-manager')
   }
   stages {
     stage('Checkout') {
@@ -19,8 +22,12 @@ pipeline {
         sh('wget https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip -O terraform/terraform.zip')
         sh('unzip -f -d terraform/ terraform/terraform.zip')
         sh('sed -i \'/  profile                  = var.aws_profile/a  shared_credentials_file  = ".credentials"\' jenkins-generic.tf')
+        sh('cp jenkins.tfvars pvars.tfvars')
+        sh('sed -i -e "s#^mgmt_cidr = #mgmt_cidr = \"$MGMT_CIDR\"#" pvars.tfvars')
+        sh('sed -i -e "s#^pub_key = #pub_key = \"$PUB_KEY\"#" pvars.tfvars')
+        sh('sed -i -e "s#^kms_manager = #kms_manager = \"$KMS_MANAGER\"#" pvars.tfvars')
         sh('terraform/terraform init -no-color')
-        sh('terraform/terraform plan -no-color -out jenkins -var-file="jenkins.tfvars"')
+        sh('terraform/terraform plan -no-color -out jenkins -var-file="pvars.tfvars"')
       }
     }
     stage('Approve') {
@@ -32,7 +39,7 @@ pipeline {
     }
     stage('Apply') {
       steps {
-        sh('terraform/terraform apply -no-color -input=false jenkins -var-file="jenkins.tfvars"')
+        sh('terraform/terraform apply -no-color -input=false jenkins -var-file="pvars.tfvars"')
       }
     }
   }
