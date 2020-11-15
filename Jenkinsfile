@@ -15,10 +15,11 @@ pipeline {
     }
     stage('Plan') {
       steps {
-        container('terraform') {
-          sh('terraform init')
-          sh('terraform plan -out jenkins')
-        }
+        sh('mkdir terraform')
+        sh('wget https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip -O terraform/terraform.zip')
+        sh('unzip -d terraform/ terraform/terraform.zip')
+        sh('terraform/terraform init')
+        sh('terraform/terraform plan -out jenkins')
       }
     }
     stage('Approve') {
@@ -30,9 +31,7 @@ pipeline {
     }
     stage('Apply') {
       steps {
-        container('terraform') {
-          sh('terraform apply -input=false jenkins')
-        }
+        sh('terraform/terraform apply -input=false jenkins')
       }
     }
   }
