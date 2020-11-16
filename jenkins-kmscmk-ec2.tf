@@ -65,6 +65,6 @@ EOF
 }
 
 resource "aws_kms_alias" "jenkins-kmscmk-ec2-alias" {
-  name                    = "alias/${var.project_prefix}-ksmcmk-ec2"
+  name                    = "alias/${var.project_prefix}-ksmcmk-ec2-${random_string.project_suffix.result}"
   target_key_id           = aws_kms_key.jenkins-kmscmk-ec2.key_id
 }
