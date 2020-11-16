@@ -44,7 +44,7 @@ pipeline {
     }
     stage('Tests') {
       steps {
-       sh('export JENKINS_IP=$(~/.local/bin/terraform output | awk \'{ print $3 }\') && export TEST1_ATTEMPTS=0; until [ "$TEST1_ATTEMPTS" -ge 50 ]; do curl --silent --output /dev/null --write-out "%{http_code}" --max-time 10 --insecure https://$JENKINS_IP/ && break; TEST1_ATTEMPTS=$((TEST1_ATTEMPTS+1)); sleep 5; done; ~/.local/bin/terraform destroy -no-color -auto-approve jenkinsplan; if [ "$TEST1_ATTEMPTS" -ge 50 ]; then exit 1; fi')
+       sh('export JENKINS_IP=$(~/.local/bin/terraform output | awk \'{ print $3 }\') && export TEST1_ATTEMPTS=0; until [ "$TEST1_ATTEMPTS" -ge 50 ]; do curl --silent --output /dev/null --write-out "%{http_code}" --max-time 10 --insecure https://$JENKINS_IP/ && break; TEST1_ATTEMPTS=$((TEST1_ATTEMPTS+1)); sleep 5; done; ~/.local/bin/terraform destroy -no-color -auto-approve -var-file="pvars.tfvars"; if [ "$TEST1_ATTEMPTS" -ge 50 ]; then exit 1; fi')
       }
     }
   }
