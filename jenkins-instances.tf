@@ -41,7 +41,3 @@ resource "aws_eip" "jenkins-master-eip-1" {
   associate_with_private_ip = var.pubnet1_instance_ip
   depends_on              = [aws_internet_gateway.jenkins-gw]
 }
-
-output "cw-eip-out" {
-  value                   = aws_eip.jenkins-master-eip-1.public_ip
-}
