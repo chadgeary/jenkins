@@ -1,6 +1,6 @@
 # Instance Key
 resource "aws_key_pair" "jenkins-instance-key" {
-  key_name                = "jenkins-instance-key"
+  key_name                = "jenkins-instance-key-${random_string.project_suffix.result}"
   public_key              = var.instance_key
   tags                    = {
     Name                    = "jenkins-instance-key"

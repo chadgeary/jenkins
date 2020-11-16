@@ -5,7 +5,7 @@ data "aws_iam_policy" "jenkins-instance-policy-ssm" {
 
 # Instance Policy S3
 resource "aws_iam_policy" "jenkins-instance-policy-s3" {
-  name                    = "jenkins-instance-policy-s3"
+  name                    = "jenkins-instance-policy-s3-${random_string.project_suffix.result}"
   path                    = "/"
   description             = "Provides jenkins instances access to endpoint, s3 objects/bucket"
   policy                  = <<EOF
@@ -88,6 +88,6 @@ resource "aws_iam_role_policy_attachment" "jenkins-iam-attach-s3" {
 
 # Instance Profile
 resource "aws_iam_instance_profile" "jenkins-instance-profile" {
-  name                    = "jenkins-instance-profile"
+  name                    = "jenkins-instance-profile-${random_string.project_suffix.result}"
   role                    = aws_iam_role.jenkins-instance-iam-role.name
 }
