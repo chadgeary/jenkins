@@ -20,9 +20,9 @@ instance_vol_size = 30
 # the name prefix for various resources
 project_prefix = "jenkins"
 
-# the vendor supplying the AMI and the AMI name - default is official Ubuntu 1804 
+# the vendor supplying the AMI and the AMI name - default is official Ubuntu 1804 amd64 
 vendor_ami_account_number = "099720109477"
-vendor_ami_name_string = "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-arm64-server-20200922"
+vendor_ami_name_string = "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-20201112"
 
 # vpc specific vars, modify these values if there would be overlap with existing resources in the aws account.
 vpc_cidr = "10.11.12.0/24"
