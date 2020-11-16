@@ -44,7 +44,7 @@ pipeline {
     }
     stage('Tests') {
       steps {
-       JENKINS_IP = sh('~/.local/bin/terraform output | awk \'{ print $3 }\'')
+       sh('$JENKINS_IP=(~/.local/bin/terraform output | awk \'{ print $3 }\')')
        sh('export TEST1_ATTEMPTS=0; until [ "$TEST1_ATTEMPTS" -ge 30 ]; do curl --silent --output /dev/null --write-out "%{http_code}" --max-time 10 --insecure https://$JENKINS_IP/ && break; sleep 5; done')
       }
     }
