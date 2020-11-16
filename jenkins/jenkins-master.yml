@@ -52,6 +52,30 @@
         enabled: yes
         daemon_reload: yes
 
+    - name: Jenkins Dockerfile
+      blockinfile:
+        create: yes
+        path: /opt/jenkins/Dockerfile
+        mode: '0644'
+        owner: ubuntu
+        group: ubuntu
+        block: |
+          FROM jenkins/jenkins:lts
+          USER root
+          RUN apt-get update && \
+              apt-get install -y openssl curl wget
+          USER jenkins
+      register: jenkins_dockerfile
+
+    - name: Jenkins docker image
+      docker_image:
+        name: jenkins_custom
+        build:
+          path: /opt/jenkins
+        source: build
+        force_source: yes
+      when: jenkins_dockerfile.changed
+
     - name: Docker Network
       docker_network:
         name: jenkinsnet
@@ -64,7 +88,7 @@
       docker_container:
         name: jenkins_master
         hostname: jenkins-master
-        image: jenkins/jenkins:lts
+        image: jenkins_custom
         networks:
           - name: jenkinsnet
             ipv4_address: "{{ docker_jenkinsmaster }}"
@@ -73,7 +97,7 @@
         volumes:
           - /opt/jenkins:/var/jenkins_home:rw
 
-    - name: web proxy container for pihole
+    - name: Docker Container - web proxy
       docker_container:
         name: web_proxy
         hostname: web-proxy
