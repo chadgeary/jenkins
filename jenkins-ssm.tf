@@ -87,8 +87,8 @@ resource "aws_ssm_association" "jenkins-master-ssm-assoc" {
   association_name        = "jenkins-master-${random_string.project_suffix.result}"
   name                    = aws_ssm_document.jenkins-ssm-doc.name
   targets {
-    key                   = "tag:Jenkins-${random_string.project_suffix.result}"
-    values                = ["master"]
+    key                   = "tag:Jenkins"
+    values                = ["master-${random_string.project_suffix.result}"]
   }
   output_location {
     s3_bucket_name          = aws_s3_bucket.jenkins-bucket.id
