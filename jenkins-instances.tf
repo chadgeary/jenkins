@@ -3,7 +3,7 @@ resource "aws_key_pair" "jenkins-instance-key" {
   key_name                = "jenkins-instance-key-${random_string.project_suffix.result}"
   public_key              = var.instance_key
   tags                    = {
-    Name                    = "jenkins-instance-key"
+    Name                    = "jenkins-instance-key-${random_string.project_suffix.result}"
   }
 }
 
@@ -18,7 +18,7 @@ resource "aws_instance" "jenkins-master-1" {
   vpc_security_group_ids  = [aws_security_group.jenkins-pubsg1.id]
   tags                    = {
     Name                    = "${var.project_prefix}-master-1"
-    Jenkins                 = "master"
+    Jenkins                 = "master-${random_string.project_suffix.result}"
   }
   user_data               = <<EOF
 #!/bin/bash

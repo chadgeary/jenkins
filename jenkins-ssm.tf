@@ -87,7 +87,7 @@ resource "aws_ssm_association" "jenkins-master-ssm-assoc" {
   association_name        = "jenkins-master-${random_string.project_suffix.result}"
   name                    = aws_ssm_document.jenkins-ssm-doc.name
   targets {
-    key                   = "tag:Jenkins"
+    key                   = "tag:Jenkins-${random_string.project_suffix.result}"
     values                = ["master"]
   }
   output_location {
