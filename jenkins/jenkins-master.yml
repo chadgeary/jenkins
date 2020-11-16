@@ -63,7 +63,8 @@
           FROM jenkins/jenkins:lts
           USER root
           RUN apt-get update && \
-              apt-get install -y openssl curl wget
+              DEBIAN_FRONTEND=noninteractive apt-get install -y openssl curl wget && \
+              DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
           USER jenkins
       register: jenkins_dockerfile
 
