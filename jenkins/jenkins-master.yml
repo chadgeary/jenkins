@@ -60,7 +60,7 @@
         owner: ubuntu
         group: ubuntu
         block: |
-          FROM jenkins/jenkins:lts
+          FROM jenkins/jenkins:slim
           USER root
           RUN apt-get update && \
               DEBIAN_FRONTEND=noninteractive apt-get install -y openssl curl wget && \
