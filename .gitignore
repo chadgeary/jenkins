@@ -1,7 +1,2 @@
-tf-nifi-lambda-node-down.zip
-terraform.*
-*.terraform
-*.terraform*.tfstate*.lock*.
-*.credentials
+*terraform*
 pvars.*
-jenkinsvars.*

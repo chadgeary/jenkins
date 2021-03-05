@@ -63,6 +63,7 @@ resource "aws_ssm_document" "jenkins-ssm-doc" {
         "# Ensure ansible is installed",
         "sudo apt-get update",
         "sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-pip git",
+        "sudo pip3 install --upgrade pip",
         "sudo pip3 install --upgrade ansible",
         "echo \"Running Ansible in `pwd`\"",
         "#this section locates files and unzips them",
